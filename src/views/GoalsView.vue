@@ -1,5 +1,0 @@
-<template>
-  <div class="goals">
-    <h1>Goals</h1>
-  </div>
-</template>

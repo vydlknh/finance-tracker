@@ -1,16 +1,5 @@
 <template>
   <div class="home-page">
-    <!-- Header Section -->
-    <header>
-      <nav class="navbar">
-        <ul>
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/tracker">Tracker</router-link></li>
-          <li><router-link to="/savings-goals">Savings Goals</router-link></li>
-          <li><router-link to="/profile">Profile</router-link></li>
-        </ul>
-      </nav>
-    </header>
 
     <!-- Main Section -->
     <main>
@@ -56,25 +45,6 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-}
-
-/* Header Styling */
-header {
-  background-color: #004080;
-  color: white;
-  padding: 1rem;
-}
-.navbar ul {
-  display: flex;
-  list-style: none;
-  justify-content: space-around;
-  padding: 0;
-  margin: 0;
-}
-.navbar ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
 }
 
 /* Main Section Styling */
