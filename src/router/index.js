@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TrackerView from '@/views/TrackerView.vue'
 import SavingsView from '@/views/SavingsView.vue'
-import GoalsView from '@/views/GoalsView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
@@ -19,14 +18,9 @@ const router = createRouter({
       component: TrackerView
     },
     {
-      path: '/savings',
+      path: '/savings-goals',
       name: 'savings',
       component: SavingsView
-    },
-    {
-      path: '/goals',
-      name: 'goals',
-      component: GoalsView
     },
     {
       path: '/profile',
