@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 
 export default {
   RouterLink,
-  RouterView
-}
+  RouterView,
+};
 </script>
 
 <style>
@@ -46,7 +46,7 @@ header {
   font-weight: bold;
 }
 .navbar li {
-  padding: 0 7px
+  padding: 0 7px;
 }
 footer {
   background-color: #f1f1f1;

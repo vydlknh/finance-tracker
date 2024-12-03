@@ -3,7 +3,7 @@
     <main>
       <div class="title">
         <h1>Tracker</h1>
-        <NewTransaction :onSubmit="addTransaction"/>
+        <NewTransaction :onSubmit="addTransaction" />
       </div>
       <div class="table">
         <table>
@@ -17,13 +17,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="t in transactions" :key="t.id">
+            <tr v-for="t in sortedTransactions" :key="t.id">
               <td>{{ t.type }}</td>
               <td>{{ formatDate(t.date) }}</td>
               <td>{{ t.description }}</td>
-              <td>{{ t.amount }}</td>
+              <td>${{ t.amount }}</td>
               <td>
-                <button id="delete" @click="deleteTransaction(t.id)"><b>X</b></button>
+                <button id="delete" @click="deleteTransaction(t.id)">
+                  <b>X</b>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -34,65 +36,77 @@
 </template>
 
 <script>
-import db from '../firebase/init'
-import { doc, addDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
-import NewTransaction from '@/components/NewTransaction.vue';
-import { Timestamp } from 'firebase/firestore';
+import db from "../firebase/init";
+import {
+  doc,
+  addDoc,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
+import NewTransaction from "@/components/NewTransaction.vue";
+import { Timestamp } from "firebase/firestore";
 
 export default {
   components: {
-    NewTransaction
+    NewTransaction,
   },
   data() {
     return {
-      transactions: []
-    }
+      transactions: [],
+    };
+  },
+  computed: {
+    sortedTransactions() {
+      return this.transactions.sort((a, b) => {
+        const dateA = a.date instanceof Timestamp ? a.date.toDate() : a.date;
+        const dateB = b.date instanceof Timestamp ? b.date.toDate() : b.date;
+        return dateB - dateA;
+      });
+    },
   },
   methods: {
     async fetchTransactions() {
       try {
-        this.transactions = []
-        const querySnap = await getDocs(collection(db, 'transactions'))
+        this.transactions = [];
+        const querySnap = await getDocs(collection(db, "transactions"));
         querySnap.forEach((doc) => {
-          this.transactions.push({id: doc.id, ...doc.data()})
-        })
-      }
-      catch (error) {
-        console.error("Error fetching transaction", error)
+          this.transactions.push({ id: doc.id, ...doc.data() });
+        });
+      } catch (error) {
+        console.error("Error fetching transaction", error);
       }
     },
     async addTransaction(transaction) {
       try {
         const transactionTimed = {
           ...transaction,
-          date: Timestamp.fromDate(transaction.date)
-        }
-        await addDoc(collection(db, 'transactions'), transactionTimed)
-        this.fetchTransactions()
-      }
-      catch(error) {
-        console.error("Error adding transaction", error)
+          date: Timestamp.fromDate(transaction.date),
+        };
+        await addDoc(collection(db, "transactions"), transactionTimed);
+        this.fetchTransactions();
+      } catch (error) {
+        console.error("Error adding transaction", error);
       }
     },
     async deleteTransaction(id) {
       try {
-        await deleteDoc(doc(db, 'transactions', id))
-        this.fetchTransactions()
-      }
-      catch (error) {
-        console.error("Error deleting transaction", error)
+        await deleteDoc(doc(db, "transactions", id));
+        this.fetchTransactions();
+      } catch (error) {
+        console.error("Error deleting transaction", error);
       }
     },
     formatDate(timestamp) {
-      if(!timestamp) return ""
-      const date = timestamp.toDate()
-      return date.toLocaleDateString()
-    }
+      if (!timestamp) return "";
+      const date = timestamp.toDate();
+      return date.toLocaleDateString();
+    },
   },
   created() {
-    this.fetchTransactions()
-  }
-}
+    this.fetchTransactions();
+  },
+};
 </script>
 
 <style>
@@ -114,7 +128,8 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
-th, td {
+th,
+td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
