@@ -9,10 +9,13 @@
     <label for="description">Description: 
       <input type="text" v-model="transaction.description" placeholder="Enter description" required>
     </label>
+    <label for="date">Date: 
+      <input type="date" v-model="transaction.date" required>
+    </label>
     <label for="amount">Amount: 
       <input type="number" v-model="transaction.amount" placeholder="Enter amount" required>
     </label>
-    <button type="submit">Add transaction</button>
+    <button id="submit" type="submit">Add transaction</button>
   </form>
 </template>
 
@@ -30,19 +33,20 @@ export default {
         type: "",
         description: "",
         amount: null,
+        date: null
       }
     }
   },
   methods: {
     async submitTransaction() {
-      if(!this.newTransaction.description || !this.newTransaction.amount) {
-        alert("Please fill in all fields")
-        return;
+      if(!this.transaction.description || !this.transaction.amount || !this.transaction.date) {
+        alert("Please fill in all fields!")
+        return
       }
       const transaction = {
         ...this.transaction,
         amount: parseFloat(this.transaction.amount),
-        date: new Date().toLocaleDateString()
+        date: new Date(this.transaction.date)
       }
       this.onSubmit(transaction)
       this.resetForm()
@@ -58,15 +62,19 @@ export default {
 }
 </script>
 <style>
+#delete {
+  background-color: #BC3947;
+}
 button {
-  padding: 5px 10px;
   border-radius: 5px;
-  background-color: #004080;
-  color: white;
-  border-color: #004080;
-  border-style: none;
   cursor: pointer;
+  color: white;
+  border-style: none;
 } 
+#submit {
+  background-color: #004080;
+  border-color: #004080;
+}
 input {
   margin: 0 5px
 }

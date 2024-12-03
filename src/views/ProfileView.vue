@@ -2,7 +2,7 @@
   <div class="savings">
     <main>
       <div class="title">
-        <h1>Profiles</h1>
+        <h1>Profile</h1>
       </div>
     </main>
   </div>

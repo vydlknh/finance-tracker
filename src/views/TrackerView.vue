@@ -13,16 +13,17 @@
               <th>Date</th>
               <th>Description</th>
               <th>Amount</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="t in transactions" :key="t.id">
               <td>{{ t.type }}</td>
-              <td>{{ t.date }}</td>
+              <td>{{ formatDate(t.date) }}</td>
               <td>{{ t.description }}</td>
               <td>{{ t.amount }}</td>
               <td>
-                <button @click="deleteTransaction(t.id)"></button>
+                <button id="delete" @click="deleteTransaction(t.id)"><b>X</b></button>
               </td>
             </tr>
           </tbody>
@@ -36,6 +37,7 @@
 import db from '../firebase/init'
 import { doc, addDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import NewTransaction from '@/components/NewTransaction.vue';
+import { Timestamp } from 'firebase/firestore';
 
 export default {
   components: {
@@ -61,7 +63,11 @@ export default {
     },
     async addTransaction(transaction) {
       try {
-        await addDoc(collection(db, 'transactions'), transaction)
+        const transactionTimed = {
+          ...transaction,
+          date: Timestamp.fromDate(transaction.date)
+        }
+        await addDoc(collection(db, 'transactions'), transactionTimed)
         this.fetchTransactions()
       }
       catch(error) {
@@ -70,12 +76,17 @@ export default {
     },
     async deleteTransaction(id) {
       try {
-        await deleteDoc(doc(db, 'transactions'), id)
+        await deleteDoc(doc(db, 'transactions', id))
         this.fetchTransactions()
       }
       catch (error) {
         console.error("Error deleting transaction", error)
       }
+    },
+    formatDate(timestamp) {
+      if(!timestamp) return ""
+      const date = timestamp.toDate()
+      return date.toLocaleDateString()
     }
   },
   created() {
@@ -87,7 +98,7 @@ export default {
 <style>
 .tracker {
   display: flex;
-  flex-direction: col umn;
+  flex-direction: column;
   height: 100vh;
 }
 main {
@@ -102,7 +113,6 @@ main {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 th, td {
   border: 1px solid #ccc;
