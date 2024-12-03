@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .tracker {
   display: flex;
   flex-direction: col umn;
