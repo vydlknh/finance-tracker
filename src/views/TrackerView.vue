@@ -36,75 +36,24 @@
 </template>
 
 <script>
-import db from "../firebase/init";
-import {
-  doc,
-  addDoc,
-  collection,
-  getDocs,
-  deleteDoc,
-} from "firebase/firestore";
+import { useTransactionStore } from "@/stores/transaction";
 import NewTransaction from "@/components/NewTransaction.vue";
-import { Timestamp } from "firebase/firestore";
 
 export default {
   components: {
     NewTransaction,
   },
-  data() {
+  setup() {
+    const transactionStore = useTransactionStore()
+    transactionStore.fetchTransactions()
     return {
-      transactions: [],
-    };
-  },
-  computed: {
-    sortedTransactions() {
-      return this.transactions.sort((a, b) => {
-        const dateA = a.date instanceof Timestamp ? a.date.toDate() : a.date;
-        const dateB = b.date instanceof Timestamp ? b.date.toDate() : b.date;
-        return dateB - dateA;
-      });
-    },
-  },
-  methods: {
-    async fetchTransactions() {
-      try {
-        this.transactions = [];
-        const querySnap = await getDocs(collection(db, "transactions"));
-        querySnap.forEach((doc) => {
-          this.transactions.push({ id: doc.id, ...doc.data() });
-        });
-      } catch (error) {
-        console.error("Error fetching transaction", error);
-      }
-    },
-    async addTransaction(transaction) {
-      try {
-        const transactionTimed = {
-          ...transaction,
-          date: Timestamp.fromDate(transaction.date),
-        };
-        await addDoc(collection(db, "transactions"), transactionTimed);
-        this.fetchTransactions();
-      } catch (error) {
-        console.error("Error adding transaction", error);
-      }
-    },
-    async deleteTransaction(id) {
-      try {
-        await deleteDoc(doc(db, "transactions", id));
-        this.fetchTransactions();
-      } catch (error) {
-        console.error("Error deleting transaction", error);
-      }
-    },
-    formatDate(timestamp) {
-      if (!timestamp) return "";
-      const date = timestamp.toDate();
-      return date.toLocaleDateString();
-    },
-  },
-  created() {
-    this.fetchTransactions();
+      ...transactionStore,
+      formatDate(timestamp) {
+        if (!timestamp) return "";
+        const date = timestamp.toDate();
+        return date.toLocaleDateString();
+      },
+    }
   },
 };
 </script>
