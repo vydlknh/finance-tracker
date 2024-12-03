@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import StatsCard from "@/views/StatsCard.vue";
-import ProgressBar from "@/src/ProgressBar.vue";
+import StatsCard from "@/components/StatsCard.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 export default {
   name: "HomeView",
