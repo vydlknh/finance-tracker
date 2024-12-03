@@ -1,6 +1,5 @@
 <template>
   <div class="home-page">
-
     <!-- Main Section -->
     <main>
       <div class="welcome-message">
@@ -17,12 +16,6 @@
         </div>
       </div>
     </main>
-
-    <!-- Footer Section -->
-    <footer>
-      <p>Contact us: support@financeapp.com</p>
-      <p>&copy; 2024 FinanceApp</p>
-    </footer>
   </div>
 </template>
 
@@ -64,13 +57,5 @@ main {
 }
 .progress-card {
   text-align: center;
-}
-
-/* Footer Styling */
-footer {
-  background-color: #f1f1f1;
-  color: #333;
-  text-align: center;
-  padding: 1rem;
 }
 </style>
