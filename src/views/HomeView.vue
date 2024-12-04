@@ -1,6 +1,5 @@
 <template>
   <div class="home-page">
-
     <!-- Main Section -->
     <main>
       <div class="welcome-message">
@@ -9,32 +8,33 @@
       </div>
 
       <div class="quick-stats">
-        <StatsCard title="Total Income" value="$5,000" />
-        <StatsCard title="Total Expenses" value="$2,000" />
+        <StatsCard title="Total Income" :value="totalIncome" />
+        <StatsCard title="Total Expenses" :value="totalExpense" />
         <div class="progress-card">
           <h3>Savings Progress</h3>
           <ProgressBar :progress="70" />
         </div>
       </div>
     </main>
-
-    <!-- Footer Section -->
-    <footer>
-      <p>Contact us: support@financeapp.com</p>
-      <p>&copy; 2024 FinanceApp</p>
-    </footer>
   </div>
 </template>
 
 <script>
-import StatsCard from "@/views/StatsCard.vue";
-import ProgressBar from "@/src/ProgressBar.vue";
+import StatsCard from "@/components/StatsCard.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
+import { useTransactionStore } from "@/stores/transaction";
 
 export default {
-  name: "HomeView",
   components: {
     StatsCard,
     ProgressBar,
+  },
+  setup() {
+    const transactionStore = useTransactionStore()
+    transactionStore.fetchTransactions()   
+    return {
+      ...transactionStore,
+    }
   },
 };
 </script>
@@ -64,13 +64,5 @@ main {
 }
 .progress-card {
   text-align: center;
-}
-
-/* Footer Styling */
-footer {
-  background-color: #f1f1f1;
-  color: #333;
-  text-align: center;
-  padding: 1rem;
 }
 </style>
