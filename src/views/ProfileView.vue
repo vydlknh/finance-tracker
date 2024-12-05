@@ -55,10 +55,10 @@ export default {
 
     const onSaveChanges = (formValues) => {
       isSaving.value = true;
-      console.log("Saving profile changes:", formValues); // Debugging: Log changes
+      console.log("Saving profile changes:", formValues); 
       // TODO: Update user profile in Firebase
       setTimeout(() => {
-        isSaving.value = false; // Simulate save completion
+        isSaving.value = false; 
       }, 1000);
     };
 
@@ -74,14 +74,14 @@ export default {
 </script>
 
 <style scoped>
-/* General Page Styling */
+
 .profile-view {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* Main Section Styling */
+
 main {
   flex: 1;
   padding: 2rem;
