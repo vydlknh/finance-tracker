@@ -43,7 +43,7 @@ export const useTransactionStore = defineStore('transaction', {
         const data = [];
         querySnap.forEach((doc) => {
           const transaction = doc.data();
-          transaction.amount = Number(transaction.amount); // Ensure numeric
+          transaction.amount = transaction.amount;
           data.push({ id: doc.id, ...transaction });
         });
         this.transactions = data;

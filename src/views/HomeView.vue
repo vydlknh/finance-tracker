@@ -51,7 +51,6 @@ export default {
 main {
   flex: 1;
   padding: 2rem;
-  background-color: #f9f9f9;
 }
 .welcome-message {
   text-align: center;

@@ -1,29 +1,78 @@
 <template>
   <div class="app">
-    <header>
-      <nav class="navbar">
-        <ul>
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/tracker">Tracker</router-link></li>
-          <li><router-link to="/savings-goals">Savings Goals</router-link></li>
-          <li><router-link to="/profile">Profile</router-link></li>
-        </ul>
-      </nav>
-    </header>
-    <RouterView />
-    <footer>
-      <p>Contact us: support@financeapp.com</p>
-      <p>&copy; 2024 FinanceApp</p>
-    </footer>
+    <div class="login" v-if="!isLoggedIn">
+      <LoginForm v-if="showLogin" @loggedIn="isLoggedIn = true" />
+      <SignupForm v-else @loggedIn="isLoggedIn = true" />
+      <button @click="toggleForm">
+        {{ showLogin ? "Create an Account" : "Already have an account? Log In" }}
+      </button>
+    </div>
+    <div v-else>
+      <header>
+        <nav class="navbar">
+          <ul>
+            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/tracker">Tracker</router-link></li>
+            <li><router-link to="/savings-goals">Savings Goals</router-link></li>
+            <li><router-link to="/profile">Profile</router-link></li>
+            <li style="cursor: pointer;" @click="logout"><b>Log Out</b></li>
+          </ul>
+        </nav>
+      </header>
+      <RouterView />
+      <footer>
+        <p>Contact us: support@financeapp.com</p>
+        <p>&copy; 2024 FinanceApp</p>
+      </footer>
+    </div>
   </div>
 </template>
 
 <script>
 import { RouterLink, RouterView } from "vue-router";
+import { useTransactionStore } from "@/stores/transaction";
+import LoginForm from "./components/LoginForm.vue";
+import SignupForm from "./components/SignupForm.vue";
+import { auth } from "./firebase/init";
 
 export default {
   RouterLink,
   RouterView,
+  components: {
+    LoginForm,
+    SignupForm
+  },
+  data() {
+    return {
+      isLoggedIn: false,
+      showLogin: true,
+      displayName: ""
+    }
+  },
+  methods: {
+    toggleForm() {
+      this.showLogin = !this.showLogin
+    },
+    beforeUpdate() {
+      if (auth.currentUser) {
+        this.displayName = auth.currentUser.displayName
+      }
+    },
+    logout() {
+      auth.signOut()
+        .then(() => {
+          this.isLoggedIn = false;
+          this.displayName = ""
+        })
+    },
+  },
+  setup() {
+    const transactionStore = useTransactionStore()
+    transactionStore.fetchTransactions()   
+    return {
+      ...transactionStore,
+    }
+  }
 };
 </script>
 
@@ -53,5 +102,11 @@ footer {
   color: #333;
   text-align: center;
   padding: 1rem;
+}
+button {
+  background-color: #004080;
+}
+.welcome {
+  margin: 1em;
 }
 </style>
