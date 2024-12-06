@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import db from "../firebase/init";
 
 export const useProfileStore = defineStore("profile", {
     state: () => ({
@@ -40,6 +41,10 @@ export const useProfileStore = defineStore("profile", {
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
+    },
+
+    async addProfile(userId) {
+      await setDoc(collection(db, "profile"), userId)
     },
 
     /**

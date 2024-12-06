@@ -3,9 +3,11 @@
     <main>
       <div class="profile-header">
         <h1>Your Profile</h1>
-        <p>Manage your personal information and settings</p>
+        <p>Name: {{ displayName }}</p>
+        <p>Email: {{ email }}</p>
+        <!-- <p>Manage your personal information and settings</p> -->
       </div>
-
+<!-- 
       <div class="profile-content">
 
         <form @submit.prevent="saveChanges">
@@ -48,8 +50,8 @@
           <button type="submit" :disabled="isSaving">
             {{ isSaving ? 'Saving...' : 'Save Changes' }}
           </button>
-        </form>
-      </div>
+        </form> -->
+      <!-- </div> -->
     </main>
   </div>
 </template>
@@ -60,21 +62,29 @@ import { useProfileStore } from "@/stores/profile";
 import { getAuth } from "firebase/auth"; 
 
 export default {
+  created() {
+    const auth = getAuth()
+    const user = auth.currentUser
+    if (user) {
+      this.displayName = user.displayName
+      this.email = user.email
+    }
+  },
   setup() {
     const profileStore = useProfileStore();
     const userId = ref(null); 
 
     
-    const auth = getAuth();
-    onMounted(() => {
-      const user = auth.currentUser;
-      if (user) {
-        userId.value = user.uid; 
-        profileStore.fetchProfile(userId.value);
-      } else {
-        console.error("No authenticated user found.");
-      }
-    });
+    // const auth = getAuth();
+    // onMounted(() => {
+    //   const user = auth.currentUser;
+    //   if (user) {
+    //     // userId.value = user.uid; 
+    //     // profileStore.fetchProfile(userId.value);
+    //   } else {
+    //     console.error("No authenticated user found.");
+    //   }
+    // });
 
   
     const saveChanges = async () => {

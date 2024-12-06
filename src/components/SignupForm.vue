@@ -2,12 +2,12 @@
   <div class="signup">
     <h2 class="title">Sign up</h2>
     <form @submit.prevent="signup">
-      <label for="username">Username</label>
-      <input type="text" id="username" placeholder="Username" required v-model="username">
       <label for="email">Email</label>
       <input type="email" id="email" placeholder="Email" required v-model="email">
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Password" required v-model="password">
+      <label for="username">Name</label>
+      <input type="text" id="username" placeholder="Name" required v-model="username">
       <button type="submit">Sign Up</button>
     </form>
   </div>
@@ -31,7 +31,7 @@ export default {
       createUserWithEmailAndPassword(auth, this.email, this.password)
       .then (() => {
         updateProfile(auth.currentUser, {
-          displayName: this.username
+          displayName: this.username,
         })
       })
       .then(() => {
