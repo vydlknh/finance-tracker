@@ -46,17 +46,11 @@ export default {
     return {
       isLoggedIn: false,
       showLogin: true,
-      displayName: ""
     }
   },
   methods: {
     toggleForm() {
       this.showLogin = !this.showLogin
-    },
-    beforeUpdate() {
-      if (auth.currentUser) {
-        this.displayName = auth.currentUser.displayName
-      }
     },
     logout() {
       auth.signOut()
@@ -83,7 +77,6 @@ header {
   padding: 1rem;
 }
 .navbar ul {
-  display: flex;
   list-style: none;
   justify-content: space-around;
   padding: 0;
@@ -95,6 +88,7 @@ header {
   font-weight: bold;
 }
 .navbar li {
+  float: left;
   padding: 0 7px;
 }
 footer {
@@ -105,8 +99,5 @@ footer {
 }
 button {
   background-color: #004080;
-}
-.welcome {
-  margin: 1em;
 }
 </style>

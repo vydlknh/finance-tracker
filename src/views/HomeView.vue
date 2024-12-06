@@ -3,6 +3,7 @@
     <!-- Main Section -->
     <main>
       <div class="welcome-message">
+        <h2>Hi, {{ displayName }}</h2>
         <h1>Welcome to Your Financial Dashboard</h1>
         <p>Track, Save, and Achieve Your Financial Goals</p>
       </div>
@@ -23,11 +24,17 @@
 import StatsCard from "@/components/StatsCard.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import { useTransactionStore } from "@/stores/transaction";
+import { getAuth } from "firebase/auth";
 
 export default {
   components: {
     StatsCard,
     ProgressBar,
+  },
+  created() {
+    const auth = getAuth()
+    const user = auth.currentUser
+    this.displayName = user.displayName
   },
   setup() {
     const transactionStore = useTransactionStore()
@@ -50,7 +57,7 @@ export default {
 /* Main Section Styling */
 main {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
 }
 .welcome-message {
   text-align: center;

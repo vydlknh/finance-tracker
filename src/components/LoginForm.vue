@@ -24,9 +24,8 @@ export default {
   },
   methods: {
     login() {
-      const userCredential = signInWithEmailAndPassword(auth, this.email, this.password)
+      signInWithEmailAndPassword(auth, this.email, this.password)
       .then(() => {
-        console.log("User logged in:", userCredential);
         this.$emit("loggedIn");
       })
     }

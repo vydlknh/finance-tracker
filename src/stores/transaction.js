@@ -22,7 +22,6 @@ export const useTransactionStore = defineStore('transaction', {
       });
     },
     totalIncome(state) {
-      console.log(state.transactions);
       return state.transactions
         .filter((transaction) => transaction.type === "income")
         .reduce((sum, transaction) => sum + transaction.amount, 0)
@@ -58,16 +57,16 @@ export const useTransactionStore = defineStore('transaction', {
           date: Timestamp.fromDate(transaction.date),
           amount: parseFloat(transaction.amount)
         };
-        await addDoc(collection(db, "transactions"), transactionTimed);
-        this.fetchTransactions();
+        const docRef = await addDoc(collection(db, "transactions"), transactionTimed);
+        this.transactions.unshift({ id: docRef.id, ...transactionTimed });  
       } catch (error) {
         console.error("Error adding transaction", error);
       }
     },
     async deleteTransaction(id) {
       try {
-        await deleteDoc(doc(db, "transactions", id));
-        this.fetchTransactions();
+        const docRef = await deleteDoc(doc(db, "transactions", id));
+        this.transactions.unshift({ id: docRef.id, ...transactionTimed });  
       } catch (error) {
         console.error("Error deleting transaction", error);
       }
