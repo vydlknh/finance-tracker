@@ -5,7 +5,7 @@ export const useProfileStore = defineStore("profile", {
   state: () => ({
     profileFields: [
       { label: "Name", value: "", key: "name", type: "text" },
-      { label: "Email", value: "", key: "email", type: "email", readonly: true },
+      { label: "Email", value: "", key: "email", type: "email" },
       {
         label: "Preferred Currency",
         value: "",
