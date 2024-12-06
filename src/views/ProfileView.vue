@@ -7,9 +7,9 @@
       </div>
 
       <div class="profile-content">
-       
+
         <form @submit.prevent="saveChanges">
-  
+        
           <div class="form-group">
             <label for="name">Name</label>
             <input
@@ -33,17 +33,18 @@
             />
           </div>
 
-
           <div class="form-group">
             <label for="currency">Preferred Currency</label>
             <select v-model="profileFields.currency" id="currency" required>
+              <option value="" disabled>Select currency</option>
+            
               <option v-for="option in profileFields.currencyOptions" :key="option" :value="option">
                 {{ option }}
               </option>
             </select>
           </div>
 
-        ->
+  
           <button type="submit" :disabled="isSaving">
             {{ isSaving ? 'Saving...' : 'Save Changes' }}
           </button>
@@ -63,6 +64,7 @@ export default {
     const profileStore = useProfileStore();
     const userId = ref(null); 
 
+    
     const auth = getAuth();
     onMounted(() => {
       const user = auth.currentUser;
@@ -74,7 +76,7 @@ export default {
       }
     });
 
-
+  
     const saveChanges = async () => {
       if (userId.value) {
         profileStore.saveProfile(userId.value);

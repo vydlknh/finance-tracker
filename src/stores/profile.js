@@ -2,20 +2,16 @@ import { defineStore } from "pinia";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 export const useProfileStore = defineStore("profile", {
-  state: () => ({
-    profileFields: [
-      { label: "Name", value: "", key: "name", type: "text" },
-      { label: "Email", value: "", key: "email", type: "email" },
-      {
-        label: "Preferred Currency",
-        value: "",
-        key: "currency",
-        type: "select",
-        options: ["USD", "EUR", "GBP", "JPY"],
+    state: () => ({
+      profileFields: {
+        name: "",
+        email: "",
+        currency: "", 
+        currencyOptions: ["USD", "EUR", "GBP", "JPY"],
       },
-    ],
-    isSaving: false,
-  }),
+      isSaving: false,
+    }),
+  
 
   actions: {
     /**
