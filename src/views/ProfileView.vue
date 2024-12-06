@@ -35,10 +35,17 @@ export default {
     const isSaving = ref(false);
 
     const profileFields = reactive([
-      { label: "Name", value: "John Doe", key: "name", type: "text" },
-      { label: "Email", value: "john.doe@example.com", key: "email", type: "email", readonly: true },
-      { label: "Preferred Currency", value: "USD", key: "currency", type: "text" },
-    ]);
+  { label: "Name", value: "John Doe", key: "name", type: "text" },
+  { label: "Email", value: "john.doe@example.com", key: "email", type: "email" }, 
+  {
+    label: "Preferred Currency",
+    value: "USD",
+    key: "currency",
+    type: "select",
+    options: ["USD", "EUR", "GBP", "JPY"], 
+  },
+]);
+
 
     const onSaveChanges = async (formValues) => {
       isSaving.value = true;

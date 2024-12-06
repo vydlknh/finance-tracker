@@ -2,13 +2,28 @@
   <form @submit.prevent="saveForm">
     <div v-for="field in fields" :key="field.key" class="form-group">
       <label :for="field.key">{{ field.label }}</label>
+
+      <!-- Input Field for Text/Email -->
       <input
+        v-if="field.type === 'text' || field.type === 'email'"
         :type="field.type"
         :id="field.key"
         :value="field.value"
         :readonly="field.readonly || false"
         @input="updateField(field.key, $event.target.value)"
       />
+
+      <!-- Dropdown for Select Type -->
+      <select
+        v-if="field.type === 'select'"
+        :id="field.key"
+        :value="field.value"
+        @change="updateField(field.key, $event.target.value)"
+      >
+        <option v-for="option in field.options" :key="option" :value="option">
+          {{ option }}
+        </option>
+      </select>
     </div>
     <button type="submit" :disabled="loading">Save Changes</button>
   </form>
@@ -17,13 +32,12 @@
 <script>
 export default {
   props: {
-    fields: Array, // Array of field objects
-    loading: Boolean, // Disable button during saving
+    fields: Array,
+    loading: Boolean,
   },
-  emits: ["save"], // Emit save event with data
+  emits: ["save"],
   methods: {
     saveForm() {
-      // Emit the fields as a keyed object
       const formData = this.fields.reduce((acc, field) => {
         acc[field.key] = field.value;
         return acc;
@@ -32,7 +46,7 @@ export default {
     },
     updateField(key, value) {
       const field = this.fields.find((f) => f.key === key);
-      if (field) field.value = value; // Update value reactively
+      if (field) field.value = value;
     },
   },
 };
