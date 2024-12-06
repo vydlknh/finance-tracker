@@ -3,7 +3,7 @@
     <div v-for="field in fields" :key="field.key" class="form-group">
       <label :for="field.key">{{ field.label }}</label>
 
-      <!-- Input Field for Text/Email -->
+
       <input
         v-if="field.type === 'text' || field.type === 'email'"
         :type="field.type"
@@ -13,7 +13,7 @@
         @input="updateField(field.key, $event.target.value)"
       />
 
-      <!-- Dropdown for Select Type -->
+
       <select
         v-if="field.type === 'select'"
         :id="field.key"
