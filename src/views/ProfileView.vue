@@ -31,83 +31,37 @@ export default {
     Form,
   },
   setup() {
-    // Replace these with Firebase data fetches
-    const profilePicture = ref("/default-avatar.png"); // Placeholder image
+    const profilePicture = ref("/default-avatar.png"); // Placeholder for profile picture
     const isSaving = ref(false);
 
     const profileFields = reactive([
-      { label: "Name", value: "First Last", key: "name", type: "text" }, // Replace with user data from Firebase
-      { label: "Email", value: "FirstLast@example.com", key: "email", type: "email", readonly: true }, // Replace with Firebase data
-      { label: "Preferred Currency", value: "USD", key: "currency", type: "text" }, // Replace with Firebase data
+      { label: "Name", value: "John Doe", key: "name", type: "text" },
+      { label: "Email", value: "john.doe@example.com", key: "email", type: "email", readonly: true },
+      { label: "Preferred Currency", value: "USD", key: "currency", type: "text" },
     ]);
 
-    const onProfilePictureChange = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          profilePicture.value = reader.result; // Show preview of the selected image
-          // TODO: Implement Firebase storage upload
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-
-    const onSaveChanges = (formValues) => {
+    const onSaveChanges = async (formValues) => {
       isSaving.value = true;
-      console.log("Saving profile changes:", formValues); 
-      // TODO: Update user profile in Firebase
-      setTimeout(() => {
-        isSaving.value = false; 
-      }, 1000);
+
+      console.log("Saving profile changes:", formValues); // Debugging: Log submitted data
+      
+      try {
+        // Simulate a delay for saving (replace with Firebase or API logic)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("Profile updated successfully!");
+      } catch (error) {
+        console.error("Failed to save profile changes:", error);
+      } finally {
+        isSaving.value = false;
+      }
     };
 
     return {
       profilePicture,
       profileFields,
       isSaving,
-      onProfilePictureChange,
       onSaveChanges,
     };
   },
 };
 </script>
-
-<style scoped>
-
-.profile-view {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-
-main {
-  flex: 1;
-  padding: 2rem;
-}
-
-.profile-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.profile-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.profile-picture {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.profile-picture img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-</style>
